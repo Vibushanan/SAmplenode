@@ -22,9 +22,13 @@ public class Sample {
 		System.out.println("Gender:\t"+o.getSex());
 		System.out.println("work mail:\t"+o.getCompanyEmail());
 		
+
 		System.out.println("---Demographics---");
 		System.out.println("Address:\t"+o.getAddress()+"\n");
 		System.out.println("Adssdress:\t"+o.getDateOfBirth());
+
+		System.out.println(o.getTelephoneNumber());
+
 		
 
 	}

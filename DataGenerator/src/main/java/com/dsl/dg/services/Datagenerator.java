@@ -14,7 +14,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.dsl.dg.DataGeneration.datacategorization;
+
 
 public class Datagenerator extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -60,7 +60,7 @@ public class Datagenerator extends HttpServlet {
 		response.setHeader("Access-Control-Allow-Origin", "*");
 		PrintWriter out = response.getWriter();
 	
-		out.println(datacategorization.columnfilter(data));
+		//out.println(datacategorization.columnfilter(data));
 	}
 
 }
