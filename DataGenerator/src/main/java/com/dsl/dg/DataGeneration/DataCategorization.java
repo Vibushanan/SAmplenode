@@ -12,7 +12,7 @@ import com.dsl.dg.models.Basics;
 import com.dsl.dg.models.Demographics;
 import com.dsl.dg.models.Personal;
 
-public class datacategorization {
+public class DataCategorization {
 
 	public static Map<String, JSONArray> columnfilter(JSONArray obj) {
 		JSONArray obj_pern = new JSONArray();
