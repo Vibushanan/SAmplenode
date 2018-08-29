@@ -40,7 +40,7 @@ public class Datagenerator extends HttpServlet {
 		while ((line = reader.readLine()) != null) {
 			jb.append(line);
 		}
-
+  
 		JSONObject inputJSON = null;
 		try {
 			inputJSON = new JSONObject(jb.toString());
