@@ -60,7 +60,7 @@ public class Datagenerator extends HttpServlet {
 		response.setCharacterEncoding("UTF-8");
 		response.setHeader("Access-Control-Allow-Origin", "*");
 		PrintWriter out = response.getWriter();
-
+	
 		out.println(datacategorization.columnfilter(data));
 	}
 

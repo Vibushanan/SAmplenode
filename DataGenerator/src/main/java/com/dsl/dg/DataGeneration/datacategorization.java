@@ -50,26 +50,27 @@ public class datacategorization {
 
 		for (int i = 0; i < obj.length(); i++) {
 
-			JSONObject p_names = obj.getJSONObject(i);
+			JSONObject data = obj.getJSONObject(i);
 
-			String tdm_col = p_names.getString("TDM Column Name");
+			String tdm_col = data.getString("TDM Column Name");
+			
 			if (Personal.contains(tdm_col)) {
 
-				obj_pern.put(p_names);
+				obj_pern.put(data);
 			}
 			if (Demographics.contains(tdm_col)) {
 
-				obj_demo.put(p_names);
+				obj_demo.put(data);
 
 			}
 			if (Basics.contains(tdm_col)) {
 
-				obj_basic.put(p_names);
+				obj_basic.put(data);
 
 			}
 			if (Bank_Details.contains(tdm_col)) {
 
-				obj_bank.put(p_names);
+				obj_bank.put(data);
 			}
 
 			main.put("Personal", obj_pern);
@@ -77,7 +78,6 @@ public class datacategorization {
 			main.put("Basics", obj_basic);
 			main.put("Bank Details", obj_bank);
 		}
-
 		return main;
 	}
 
