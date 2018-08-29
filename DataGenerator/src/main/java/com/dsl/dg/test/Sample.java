@@ -15,9 +15,9 @@ public class Sample {
 		
 		Person o = fairy.person(PersonProperties.female());
 		
-		System.out.println(o.getEmail());
+		System.out.println(o.getTelephoneNumber());
 		
-		System.out.println(o.getFullName());
+	
 	}
 
 }
