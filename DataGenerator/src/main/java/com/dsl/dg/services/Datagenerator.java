@@ -23,7 +23,7 @@ public class Datagenerator extends HttpServlet {
 	public Datagenerator() {
 
 	}
-
+   
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
