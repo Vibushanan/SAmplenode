@@ -45,7 +45,6 @@ public class Datagenerator extends HttpServlet {
 		try {
 			inputJSON = new JSONObject(jb.toString());
 		} catch (JSONException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		JSONObject obj_job = inputJSON.getJSONObject("job information");
