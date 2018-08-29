@@ -1,83 +1,81 @@
 package com.dsl.dg.DataGeneration;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.dsl.dg.models.BankDetails;
+import com.dsl.dg.models.Basics;
+import com.dsl.dg.models.Demographics;
+import com.dsl.dg.models.Personal;
+
 public class datacategorization {
 
-	public static JSONObject columnfilter(JSONArray obj) {
-		JSONObject main = new JSONObject();
+	public static Map<String, JSONArray> columnfilter(JSONArray obj) {
 		JSONArray obj_pern = new JSONArray();
 		JSONArray obj_demo = new JSONArray();
 		JSONArray obj_basic = new JSONArray();
 		JSONArray obj_bank = new JSONArray();
 
-		ArrayList<String> Personal = new ArrayList<String>();
-		Personal.add("First Name");
-		Personal.add("Last Name");
-		Personal.add("Full Name");
-		Personal.add("Age");
-		Personal.add("Marital Status");
-		Personal.add("Work Mail");
-		Personal.add("Gender");
-		Personal.add("Occupation");
-		Personal.add("Company");
-		Personal.add("ATM Zipcode");
-		Personal.add("Monthly Income");
-		Personal.add("Phone");
+		Map<String, JSONArray> main = new HashMap<String, JSONArray>();
 
-		ArrayList<String> Demographics = new ArrayList<String>();
-		Demographics.add("Address");
-		Demographics.add("Zipcode");
-		Demographics.add("City");
-		Demographics.add("County");
-		Demographics.add("Latitude");
-		Demographics.add("Longitude");
-		Demographics.add("State");
+		ArrayList<String> pesnl_arr = new ArrayList<String>();
+		for (Personal s1 : Personal.values()) {
+			pesnl_arr.add(s1.toString());
 
-		ArrayList<String> Basics = new ArrayList<String>();
-		Basics.add("ID");
-		Basics.add("Row Number");
-		Basics.add("Boolean");
-		Basics.add("Date");
+		}
 
-		ArrayList<String> Bank_Details = new ArrayList<String>();
-		Bank_Details.add("Bank ID");
-		Bank_Details.add("Bank Name");
-		Bank_Details.add("Ban SWIFT BIC (Bank Identifier Code)");
+		ArrayList<String> Demo_arr = new ArrayList<String>();
+		for (Demographics s2 : Demographics.values()) {
+			Demo_arr.add(s2.toString());
+
+		}
+
+		ArrayList<String> Basi_arr = new ArrayList<String>();
+		for (Basics s3 : Basics.values()) {
+			Basi_arr.add(s3.toString());
+
+		}
+
+		ArrayList<String> Bank_arr = new ArrayList<String>();
+		for (BankDetails s4 : BankDetails.values()) {
+			Bank_arr.add(s4.toString());
+
+		}
 
 		for (int i = 0; i < obj.length(); i++) {
 
 			JSONObject data = obj.getJSONObject(i);
 
 			String tdm_col = data.getString("TDM Column Name");
-			
-			if (Personal.contains(tdm_col)) {
+
+			if (pesnl_arr.contains(tdm_col)) {
 
 				obj_pern.put(data);
 			}
-			if (Demographics.contains(tdm_col)) {
+			if (Demo_arr.contains(tdm_col)) {
 
 				obj_demo.put(data);
 
 			}
-			if (Basics.contains(tdm_col)) {
+			if (Basi_arr.contains(tdm_col)) {
 
 				obj_basic.put(data);
 
 			}
-			if (Bank_Details.contains(tdm_col)) {
+			if (Bank_arr.contains(tdm_col)) {
 
 				obj_bank.put(data);
 			}
-
 			main.put("Personal", obj_pern);
 			main.put("Demographics", obj_demo);
 			main.put("Basics", obj_basic);
 			main.put("Bank Details", obj_bank);
 		}
+		System.out.println(main);
 		return main;
 	}
 
