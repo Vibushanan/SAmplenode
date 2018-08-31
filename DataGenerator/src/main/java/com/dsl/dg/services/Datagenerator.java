@@ -1,20 +1,25 @@
 package com.dsl.dg.services;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
-import org.json.JSONArray;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
-
+import com.dsl.dg.DataGeneration.DataCategorization;
+import com.dsl.dg.DataGeneration.DataDictionary;
+import com.dsl.dg.process.DataGeneration_Coordinator;
+import com.dsl.dg.workers.PersonalDataGenerator;
 
 public class Datagenerator extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -23,7 +28,19 @@ public class Datagenerator extends HttpServlet {
 	public Datagenerator() {
 
 	}
-   
+
+	public void init(ServletConfig config) throws ServletException {
+
+		logger.info("Initializing Data Obfuscator..");
+		logger.info("Loading dictionaries...");
+
+		ClassLoader classLoader = getClass().getClassLoader();
+		DataDictionary.setOccupations(
+				DataDictionary.load_dictionary(new File(classLoader.getResource("Occupations.csv").getFile())));
+
+		logger.info("Dictionary Load completed");
+	}
+
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
@@ -40,27 +57,30 @@ public class Datagenerator extends HttpServlet {
 		while ((line = reader.readLine()) != null) {
 			jb.append(line);
 		}
-  
+
 		JSONObject inputJSON = null;
 		try {
 			inputJSON = new JSONObject(jb.toString());
 		} catch (JSONException e1) {
 			e1.printStackTrace();
 		}
+		System.out.println("inputdata  " + inputJSON);
+
 		JSONObject obj_job = inputJSON.getJSONObject("job information");
 
 		String user_id = obj_job.getString("user_ID");
 		String row_count = obj_job.get("number of rows to generate").toString();
 
-		JSONArray data = inputJSON.getJSONArray("Data");
 		logger.info("Data Generation Request : " + inputJSON);
 
-		response.setContentType("aapplication/json");
+		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
 		response.setHeader("Access-Control-Allow-Origin", "*");
 		PrintWriter out = response.getWriter();
-	
-		//out.println(datacategorization.columnfilter(data));
+		int rowcount = Integer.parseInt(row_count);
+		DataGeneration_Coordinator dg = new DataGeneration_Coordinator(inputJSON, rowcount);
+
+		out.println(dg.coordinator());
 	}
 
 }

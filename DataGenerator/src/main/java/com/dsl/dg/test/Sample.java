@@ -11,7 +11,7 @@ public class Sample {
 		
 		Fairy fairy = Fairy.create();
 		
-		
+	
 		
 		Person o = fairy.person(PersonProperties.female());
 		System.out.println("---Personal---");
@@ -25,11 +25,11 @@ public class Sample {
 
 		System.out.println("---Demographics---");
 		System.out.println("Address:\t"+o.getAddress()+"\n");
-		System.out.println("Adssdress:\t"+o.getDateOfBirth());
+		System.out.println("City:\t"+o.getAddress().getCity()+"\n");
+		System.out.println("ZipCode:\t"+o.getAddress().getPostalCode()+"\n");
+		System.out.println("company name\t"+o.getCompany().getName());
 
-		System.out.println(o.getTelephoneNumber());
-
-		
+	
 
 	}
 
