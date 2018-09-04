@@ -1,5 +1,7 @@
 package com.dsl.dg.test;
 
+import com.github.javafaker.Faker;
+
 import io.codearte.jfairy.Fairy;
 import io.codearte.jfairy.producer.person.Person;
 import io.codearte.jfairy.producer.person.PersonProperties;
@@ -8,12 +10,11 @@ public class Sample {
 	
 	
 	public static void main(String args[]) {
+		Faker fak=Faker.instance();
 		
 		Fairy fairy = Fairy.create();
-		
-	
-		
 		Person o = fairy.person(PersonProperties.female());
+
 		System.out.println("---Personal---");
 		System.out.println("firstname:\t"+o.getFirstName());
 		System.out.println("lastname:\t"+o.getLastName());

@@ -1,10 +1,5 @@
 package com.dsl.dg.workers;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -21,111 +16,156 @@ import com.dsl.dg.DataGeneration.DataDictionary;
 import com.dsl.dg.DataGeneration.RandomNumberGenerator;
 import com.dsl.dg.DataGeneration.WeightedRandomPicker;
 
-import com.github.javafaker.Faker;
+import io.codearte.jfairy.Fairy;
+import io.codearte.jfairy.producer.person.Person;
+import io.codearte.jfairy.producer.person.PersonProperties;
+import javafx.scene.shape.Arc;
 
 public class PersonalDataGenerator implements Callable<JSONArray> {
 
-	static Map<String, JSONArray> input = new HashMap<String, JSONArray>();
+	JSONArray input = new JSONArray();
+	int rowcount;
 
-	public PersonalDataGenerator(Map<String, JSONArray> map) {
+	public PersonalDataGenerator(JSONArray map, int rowcount1) {
 
 		input = map;
-
+		rowcount = rowcount1;
 	}
 
 	public JSONArray call() {
 
-		return null;
+		System.out.println("in call");
+		Fairy fairy = Fairy.create();
 
-	}
-
-	public static JSONArray getpersonaldata(int rowcount) {
-
-		Faker faker = new Faker();
+		Person name = null;
 		JSONArray finarr = new JSONArray();
 
-		if (input.containsKey("Personal")) {
-			JSONArray arr = input.get("Personal");
+		ArrayList<String> al = new ArrayList<String>();
 
-			for (int y = 0; y < rowcount; y++) {
-				JSONObject finobj = new JSONObject();
-				for (int i = 0; i < arr.length(); i++) {
+		WeightedRandomPicker wrp = new WeightedRandomPicker();
+		
+		WeightedRandomPicker wrpm = new WeightedRandomPicker();
+		wrpm.add(50, "Married").add(50, "single");
+		for (int y = 0; y < rowcount; y++) {
 
-					JSONObject data = arr.getJSONObject(i);
-					if (data.getString("TDM Column Name").equals("Full_Name")) {
+			for (int i = 0; i < input.length(); i++) {
 
-						finobj.put(data.getString("User Column Name"), faker.name().fullName());
+				JSONObject data = input.getJSONObject(i);
 
-					}
+				if (data.getString("TDM Column Name").equals("Gender")) {
 
-					if (data.getString("TDM Column Name").equals("First_Name")) {
+					JSONObject obj_data = data.getJSONObject("Additional Information").getJSONObject("Range");
+					int male = (Integer) obj_data.get("male%");
+					int female = (Integer) obj_data.get("female%");
 
-						finobj.put(data.getString("User Column Name"), faker.name().firstName());
+					wrp.add(male, "Male").add(female, "Female");
 
-					}
-					if (data.getString("TDM Column Name").equals("Last_Name")) {
-
-						finobj.put(data.getString("User Column Name"), faker.name().lastName());
-
-					}
-					if (data.getString("TDM Column Name").equals("Age")) {
-
-						finobj.put(data.getString("User Column Name"), RandomNumberGenerator.getRandomNumber(20, 60));
-
-					}
-					if (data.getString("TDM Column Name").equals("Marital_Status")) {
-						WeightedRandomPicker<Object> rc = new WeightedRandomPicker<Object>().add(50, "Married").add(50,
-								"single");
-						finobj.put(data.getString("User Column Name"), rc.next());
-
-					}
-
-					if (data.getString("TDM Column Name").equals("Work_Mail")) {
-
-						finobj.put(data.getString("User Column Name"), faker.internet().emailAddress());
-
-					}
-					if (data.getString("TDM Column Name").equals("Gender")) {
-
-						finobj.put(data.getString("User Column Name"), faker.demographic().sex());
-
-					}
-					if (data.getString("TDM Column Name").equals("Occupation")) {
-
-						finobj.put(data.getString("User Column Name"), DataDictionary.occupations
-								.get(RandomNumberGenerator.getRandomNumber(0, DataDictionary.occupations.size() - 1)));
-
-					}
-					if (data.getString("TDM Column Name").equals("Company")) {
-
-						finobj.put(data.getString("User Column Name"), faker.company().name());
-
-					}
-					if (data.getString("TDM Column Name").equals("ATM_Zipcode")) {
-						String zipcode = faker.address().zipCode().substring(0, 5);
-						finobj.put(data.getString("User Column Name"), zipcode);
-
-					}
-					if (data.getString("TDM Column Name").equals("Monthly_Income")) {
-
-						finobj.put(data.getString("User Column Name"),
-								RandomNumberGenerator.getRandomNumber(5000, 60000));
-
-					}
-					if (data.getString("TDM Column Name").equals("Phone")) {
-
-						finobj.put(data.getString("User Column Name"),
-								faker.phoneNumber().cellPhone().replace(".", "-"));
-
-					}
-
+					al.add(wrp.next().toString());
 				}
-				finarr.put(finobj);
+
 			}
 
 		}
-		System.out.println(" branch   " + finarr);
+
+		for (int y = 0; y < al.size(); y++) {
+
+			if (al.get(y).equals("Male")) {
+				name = fairy.person(PersonProperties.male());
+
+			} else {
+				name = fairy.person(PersonProperties.female());
+			}
+			JSONObject finobj = new JSONObject();
+
+			for (int i = 0; i < input.length(); i++) {
+
+				JSONObject data = input.getJSONObject(i);
+				if (data.getString("TDM Column Name").equals("Gender")) {
+					finobj.put(data.getString("User Column Name"), name.getSex());
+
+				}
+
+				if (data.getString("TDM Column Name").equals("Full_Name")) {
+
+					finobj.put(data.getString("User Column Name"), name.getFullName());
+
+				}
+				if (data.getString("TDM Column Name").equals("First_Name")) {
+
+					finobj.put(data.getString("User Column Name"), name.getFirstName());
+
+				}
+				if (data.getString("TDM Column Name").equals("Last_Name")) {
+
+					finobj.put(data.getString("User Column Name"), name.getLastName());
+
+				}
+				if (data.getString("TDM Column Name").equals("Work_Mail")) {
+
+					finobj.put(data.getString("User Column Name"), name.getCompanyEmail());
+
+				}
+				if (data.getString("TDM Column Name").equals("Age")) {
+					if (data.getJSONObject("Additional Information").length() != 0) {
+						JSONObject obj_data = data.getJSONObject("Additional Information").getJSONObject("Range");
+						int min = (Integer) obj_data.get("Min");
+						int max = (Integer) obj_data.get("Max");
+						finobj.put(data.getString("User Column Name"), RandomNumberGenerator.getRandomNumber(min, max));
+					} else {
+
+						finobj.put(data.getString("User Column Name"), RandomNumberGenerator.getRandomNumber(1, 99));
+					}
+
+				}
+
+				if (data.getString("TDM Column Name").equals("Marital_Status")) {
+
+					finobj.put(data.getString("User Column Name"), wrpm.next());
+
+				}
+				if (data.getString("TDM Column Name").equals("Occupation")) {
+
+					finobj.put(data.getString("User Column Name"), DataDictionary.occupations
+							.get(RandomNumberGenerator.getRandomNumber(0, DataDictionary.occupations.size() - 1)));
+
+				}
+				if (data.getString("TDM Column Name").equals("Company")) {
+
+					finobj.put(data.getString("User Column Name"), name.getCompany().getName());
+
+				}
+				if (data.getString("TDM Column Name").equals("ATM_Zipcode")) {
+					String zipcode = name.getAddress().getPostalCode();
+					finobj.put(data.getString("User Column Name"), zipcode);
+
+				}
+				if (data.getString("TDM Column Name").equals("Monthly_Income")) {
+					if (data.getJSONObject("Additional Information").length() != 0) {
+						JSONObject obj_data = data.getJSONObject("Additional Information").getJSONObject("Range");
+						int min = (Integer) obj_data.get("Min");
+						int max = (Integer) obj_data.get("Max");
+						finobj.put(data.getString("User Column Name"), RandomNumberGenerator.getRandomNumber(min, max));
+					} else {
+						finobj.put(data.getString("User Column Name"),
+								RandomNumberGenerator.getRandomNumber(3000, 9000));
+					}
+
+				}
+				if (data.getString("TDM Column Name").equals("Phone")) {
+
+					finobj.put(data.getString("User Column Name"), name.getTelephoneNumber());
+
+				}
+
+			}
+			finarr.put(finobj);
+
+		}
+
+		System.out.println("personal generated data   " + finarr);
 
 		return finarr;
+
 	}
+
 }

@@ -75,7 +75,7 @@ public class DataCategorization {
 			main.put("Basics", obj_basic);
 			main.put("Bank Details", obj_bank);
 		}
-		System.out.println(main);
+		
 		return main;
 	}
 

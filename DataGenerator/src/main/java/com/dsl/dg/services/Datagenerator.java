@@ -64,7 +64,7 @@ public class Datagenerator extends HttpServlet {
 		} catch (JSONException e1) {
 			e1.printStackTrace();
 		}
-		System.out.println("inputdata  " + inputJSON);
+		System.out.println("inputdata  " + inputJSON + "\n");
 
 		JSONObject obj_job = inputJSON.getJSONObject("job information");
 
@@ -80,7 +80,12 @@ public class Datagenerator extends HttpServlet {
 		int rowcount = Integer.parseInt(row_count);
 		DataGeneration_Coordinator dg = new DataGeneration_Coordinator(inputJSON, rowcount);
 
-		out.println(dg.coordinator());
+		try {
+			out.println(dg.coordinator());
+		} catch (InterruptedException e) {
+
+			e.printStackTrace();
+		}
 	}
 
 }

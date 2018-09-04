@@ -1,6 +1,13 @@
 package com.dsl.dg.process;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -20,22 +27,34 @@ public class DataGeneration_Coordinator {
 
 	}
 
-	public static JSONArray coordinator() {
+	public static JSONArray coordinator() throws InterruptedException {
 
 		JSONArray data = inputObj.getJSONArray("Data");
 
 		Map<String, JSONArray> filterData = DataCategorization.columnfilter(data);
 
-		PersonalDataGenerator pd = new PersonalDataGenerator(filterData);
-		// pd.getpersonaldata(rowcount);
+		JSONArray arr = filterData.get("Personal");
+		ExecutorService executor = Executors.newFixedThreadPool(1);
 
-		// getpersonaldata();
+		List<Future<JSONArray>> list = new ArrayList<Future<JSONArray>>();
 
-		// JSONArray personalData = pd.call();
+		Callable<JSONArray> callable = new PersonalDataGenerator(arr, row_count);
 
-		// basics, bank details, demo
+		Future<JSONArray> datar = executor.submit(callable);
+		list.add(datar);
 
-		return pd.getpersonaldata(row_count);
+		executor.shutdown();
+		try {
+			System.out.println("thread \t" + list.get(0).get());
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return null;
 
 	}
 
