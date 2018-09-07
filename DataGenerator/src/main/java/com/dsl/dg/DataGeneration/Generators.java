@@ -145,9 +145,7 @@ public class Generators {
 			if (format.equals("mm/dd/yyyy")) {
 				total = month + "/" + day + "/" + year;
 			}
-			if (format.equals("mm/dd/yyyy")) {
-				total = month + "/" + day + "/" + year;
-			}
+			
 			arr.add(total);
 		}
 	}
