@@ -19,6 +19,7 @@ import org.json.JSONObject;
 import com.dsl.dg.DataGeneration.DataCategorization;
 import com.dsl.dg.DataGeneration.DataDictionary;
 import com.dsl.dg.process.DataGeneration_Coordinator;
+import com.dsl.dg.workers.DemographicsDataGenerator;
 import com.dsl.dg.workers.PersonalDataGenerator;
 
 public class Datagenerator extends HttpServlet {
@@ -80,6 +81,13 @@ public class Datagenerator extends HttpServlet {
 		int rowcount = Integer.parseInt(row_count);
 		DataGeneration_Coordinator dg = new DataGeneration_Coordinator(inputJSON, rowcount);
 
+		
+		
+		
+		
+		
+		
+		
 		try {
 			out.println(dg.coordinator());
 		} catch (InterruptedException e) {

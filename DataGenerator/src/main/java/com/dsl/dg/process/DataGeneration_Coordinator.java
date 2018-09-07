@@ -13,6 +13,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.dsl.dg.DataGeneration.DataCategorization;
+import com.dsl.dg.workers.BasicDataGenerator;
+import com.dsl.dg.workers.DemographicsDataGenerator;
 import com.dsl.dg.workers.PersonalDataGenerator;
 
 public class DataGeneration_Coordinator {
@@ -27,25 +29,59 @@ public class DataGeneration_Coordinator {
 
 	}
 
-	public static JSONArray coordinator() throws InterruptedException {
+	public static List<Future<JSONArray>> coordinator() throws InterruptedException {
 
+		
 		JSONArray data = inputObj.getJSONArray("Data");
 
 		Map<String, JSONArray> filterData = DataCategorization.columnfilter(data);
 
-		JSONArray arr = filterData.get("Personal");
-		ExecutorService executor = Executors.newFixedThreadPool(1);
+		JSONArray arr_personal = filterData.get("Personal");
+		JSONArray arr_demographics = filterData.get("Demographics");
+		JSONArray arr_basics = filterData.get("Basics");
+		
+		/*//rough for working
+		JSONArray json=new JSONArray();
+		
+		BasicDataGenerator bdg=new BasicDataGenerator(arr_basics,row_count);
+		
+		try {
+			json=bdg.call();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		*/
+		
+		//with callable
+		ExecutorService executor = Executors.newFixedThreadPool(2);
 
 		List<Future<JSONArray>> list = new ArrayList<Future<JSONArray>>();
 
-		Callable<JSONArray> callable = new PersonalDataGenerator(arr, row_count);
+		Callable<JSONArray> callable_p = new PersonalDataGenerator(arr_personal, row_count);
+		Callable<JSONArray> callable_b = new BasicDataGenerator(arr_basics,row_count);
+		
+		
+	//	Callable<JSONArray> callable1 = new DemographicsDataGeneration(arr_demographics, row_count);
+		
+		
 
-		Future<JSONArray> datar = executor.submit(callable);
+		Future<JSONArray> datar = executor.submit(callable_p);
+		
+		Future<JSONArray> datar1 = executor.submit(callable_b);
 		list.add(datar);
-
+list.add(datar1);
 		executor.shutdown();
+		
+		
+		
+
+		
+		
+		
 		try {
 			System.out.println("thread \t" + list.get(0).get());
+			System.out.println("thread \t" + list.get(1).get());
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -54,8 +90,9 @@ public class DataGeneration_Coordinator {
 			e.printStackTrace();
 		}
 
-		return null;
+		return list;
 
+	//	return json;
 	}
 
 }
