@@ -28,16 +28,13 @@ public class Sample {
 		System.out.println("City:\t" + o.getAddress().getCity() + "\n");
 		System.out.println("ZipCode:\t" + o.getAddress().getPostalCode() + "\n");
 		// System.out.println("company nasme\t"+o.getCompany().getName());
-		
-<<<<<<< HEAD
+
 		
 		System.out.println(o.getAddress());
 		
 		//System.out.println(o.getFirstName());
 		
 		System.out.println();
-=======
->>>>>>> branch 'master' of http://10.41.2.68:9292/vibushanan.s/DataGeneration.git
 
 		
 
