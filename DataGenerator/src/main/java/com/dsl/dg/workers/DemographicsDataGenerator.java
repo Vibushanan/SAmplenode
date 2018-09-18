@@ -18,12 +18,9 @@ public DemographicsDataGenerator(JSONArray map, int rowcount1){
 		rowcount = rowcount1;
 		
 	}
-	
-	
-	
-	
-	
-	
+
+
+
 	public JSONArray call() throws Exception {
 		
 		return null;

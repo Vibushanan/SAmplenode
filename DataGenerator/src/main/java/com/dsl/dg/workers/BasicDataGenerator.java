@@ -69,10 +69,8 @@ public class BasicDataGenerator implements Callable<JSONArray> {
 					finobj.put(data.getString("User Column Name"), randomdates.get(ran_no));
 				}
 			}
-			finarr.put(finobj);
-			
+			finarr.put(finobj);		
 		}
-		
 		return finarr;
 	}
 }
