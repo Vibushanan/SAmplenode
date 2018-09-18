@@ -31,7 +31,6 @@ public class PersonalDataGenerator implements Callable<JSONArray> {
 		input = map;
 		rowcount = rowcount1;
 	}
-
 	public JSONArray call() {
 
 		System.out.println("in call");
@@ -43,13 +42,12 @@ public class PersonalDataGenerator implements Callable<JSONArray> {
 		ArrayList<String> al = new ArrayList<String>();
 
 		WeightedRandomPicker wrp = new WeightedRandomPicker();
-		
+
 		WeightedRandomPicker wrpm = new WeightedRandomPicker();
 		wrpm.add(50, "Married").add(50, "single");
 		for (int y = 0; y < rowcount; y++) {
 
 			for (int i = 0; i < input.length(); i++) {
-
 				JSONObject data = input.getJSONObject(i);
 
 				if (data.getString("TDM Column Name").equals("Gender")) {
@@ -62,11 +60,8 @@ public class PersonalDataGenerator implements Callable<JSONArray> {
 
 					al.add(wrp.next().toString());
 				}
-
 			}
-
 		}
-
 		for (int y = 0; y < al.size(); y++) {
 
 			if (al.get(y).equals("Male")) {
@@ -112,32 +107,25 @@ public class PersonalDataGenerator implements Callable<JSONArray> {
 						int max = (Integer) obj_data.get("Max");
 						finobj.put(data.getString("User Column Name"), RandomNumberGenerator.getRandomNumber(min, max));
 					} else {
-
 						finobj.put(data.getString("User Column Name"), RandomNumberGenerator.getRandomNumber(1, 99));
 					}
-
 				}
-
 				if (data.getString("TDM Column Name").equals("Marital_Status")) {
 
 					finobj.put(data.getString("User Column Name"), wrpm.next());
-
 				}
 				if (data.getString("TDM Column Name").equals("Occupation")) {
 
 					finobj.put(data.getString("User Column Name"), DataDictionary.occupations
 							.get(RandomNumberGenerator.getRandomNumber(0, DataDictionary.occupations.size() - 1)));
-
 				}
 				if (data.getString("TDM Column Name").equals("Company")) {
 
 					finobj.put(data.getString("User Column Name"), name.getCompany().getName());
-
 				}
 				if (data.getString("TDM Column Name").equals("ATM_Zipcode")) {
 					String zipcode = name.getAddress().getPostalCode();
 					finobj.put(data.getString("User Column Name"), zipcode);
-
 				}
 				if (data.getString("TDM Column Name").equals("Monthly_Income")) {
 					if (data.getJSONObject("Additional Information").length() != 0) {
@@ -149,21 +137,14 @@ public class PersonalDataGenerator implements Callable<JSONArray> {
 						finobj.put(data.getString("User Column Name"),
 								RandomNumberGenerator.getRandomNumber(3000, 9000));
 					}
-
 				}
 				if (data.getString("TDM Column Name").equals("Phone")) {
 
 					finobj.put(data.getString("User Column Name"), name.getTelephoneNumber());
-
 				}
-
 			}
 			finarr.put(finobj);
-
 		}
-
-		System.out.println("personal generated data   " + finarr);
-
 		return finarr;
 
 	}

@@ -79,7 +79,6 @@ public class Generators {
 		return map.get(val);
 	}
 	// for random data generaton
-
 	public static ArrayList<String> getrandomdates(String format, JSONObject range,int rowcount) {
 		ArrayList<String> arr = new ArrayList<String>();
 
@@ -153,14 +152,14 @@ public class Generators {
 	}
 
 	public static List<DateTime> getDateRange(DateTime start, DateTime end) {
-		List<DateTime> ret = new ArrayList<DateTime>();
+		List<DateTime> dates = new ArrayList<DateTime>();
 		DateTime tmp = start;
 		while (tmp.isBefore(end) || tmp.equals(end)) {
 			tmp = tmp.plusDays(1);
-			ret.add(tmp);
+			dates.add(tmp);
 		}
-		ret = ret.subList(0, ret.size() - 1); // to get only in between the
+		dates = dates.subList(0, dates.size() - 1); // to get only in between the
 												// range of dates
-		return ret;
+		return dates;
 	}
 }

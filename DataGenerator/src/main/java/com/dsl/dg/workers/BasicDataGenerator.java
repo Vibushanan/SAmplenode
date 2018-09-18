@@ -24,7 +24,7 @@ public class BasicDataGenerator implements Callable<JSONArray> {
 		JSONArray finarr = new JSONArray();
 		Generators gn = new Generators();
 		Random rnd = new Random();
-		System.out.println("basic data genertor in");
+	//	System.out.println("basic data genertor in");
 
 		ArrayList<Integer> sn_arr = gn.getserialnumber(rowcount);
 		ArrayList<String> uni_range = null;
@@ -72,7 +72,7 @@ public class BasicDataGenerator implements Callable<JSONArray> {
 			finarr.put(finobj);
 			
 		}
-		System.out.println(finarr);
+		
 		return finarr;
 	}
 }
