@@ -82,8 +82,8 @@ public class Generators {
 	public static ArrayList<String> getrandomdates(String format, JSONObject range,int rowcount) {
 		ArrayList<String> arr = new ArrayList<String>();
  
-		String Sdate = range.getString("startdate");
-		String Edate = range.getString("enddate");
+		String Sdate = range.getString("Min");
+		String Edate = range.getString("Max");
 		DateTime start = DateTime.parse(Sdate);
 		DateTime end = DateTime.parse(Edate);
 		List<DateTime> between = getDateRange(start, end);
