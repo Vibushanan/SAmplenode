@@ -79,6 +79,7 @@ public class Datagenerator extends HttpServlet {
 		response.setHeader("Access-Control-Allow-Origin", "*");
 		PrintWriter out = response.getWriter();
 		int rowcount = Integer.parseInt(row_count);
+		
 		DataGeneration_Coordinator dg = new DataGeneration_Coordinator(inputJSON, rowcount);
 
 		

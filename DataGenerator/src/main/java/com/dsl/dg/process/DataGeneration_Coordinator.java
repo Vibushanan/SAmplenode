@@ -15,6 +15,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.dsl.dg.DataGeneration.DataCategorization;
+import com.dsl.dg.process.util.Util;
 import com.dsl.dg.workers.BasicDataGenerator;
 import com.dsl.dg.workers.DemographicsDataGenerator;
 import com.dsl.dg.workers.PersonalDataGenerator;
@@ -35,11 +36,13 @@ public class DataGeneration_Coordinator {
 
 		JSONArray data = inputObj.getJSONArray("Data");
 
-		Map<String, JSONArray> filterData = DataCategorization.columnfilter(data);
+		Map<String, Map<String, JSONObject>> filterData = DataCategorization.columnfilter(data);
+		
+		System.out.println("Filtered Data :"+filterData);
 
-		JSONArray arr_personal = filterData.get("Personal");
-		JSONArray arr_demographics = filterData.get("Demographics");
-		JSONArray arr_basics = filterData.get("Basics");
+		//JSONArray arr_personal = filterData.get("Personal");
+		//JSONArray arr_demographics = filterData.get("Demographics");
+		//JSONArray arr_basics = filterData.get("Basics");
 
 		/*
 		 * //rough for working JSONArray json=new JSONArray();
@@ -50,28 +53,44 @@ public class DataGeneration_Coordinator {
 		 * catch block e.printStackTrace(); }
 		 */
 
+		
+		
+		PersonalDataGenerator pg = 	new PersonalDataGenerator(filterData.get(com.dsl.dg.models.Constants.category_personal), row_count);
+		
+		pg.call();
+		
+		
+		
 		// with callable
-		ExecutorService executor = Executors.newFixedThreadPool(2);
+		/*ExecutorService executor = Executors.newFixedThreadPool(Util.getExecutorsCount(3));
 
 		List<Future<JSONArray>> list = new ArrayList<Future<JSONArray>>();
 
-		Callable<JSONArray> callable_p = new PersonalDataGenerator(arr_personal, row_count);
-		Callable<JSONArray> callable_b = new BasicDataGenerator(arr_basics, row_count);
-
-		// Callable<JSONArray> callable1 = new
-		// DemographicsDataGeneration(arr_demographics, row_count);
-
-		Future<JSONArray> datar = executor.submit(callable_p);
-
-		Future<JSONArray> datar1 = executor.submit(callable_b);
-		list.add(datar);
-		list.add(datar1);
-		executor.shutdown();
+		if(filterData.containsKey(com.dsl.dg.models.Constants.category_personal)) {
+			Callable<JSONArray> callable_personal = new PersonalDataGenerator(filterData.get(com.dsl.dg.models.Constants.category_personal), row_count);
+			Future<JSONArray> datar = executor.submit(callable_personal);
+			list.add(datar);
+		}
+		if(filterData.containsKey(com.dsl.dg.models.Constants.category_basics)) {
+			Callable<JSONArray> callable_basics = new BasicDataGenerator(filterData.get(com.dsl.dg.models.Constants.category_basics), row_count);
+			Future<JSONArray> datar1 = executor.submit(callable_basics);
+			list.add(datar1);
+		}
 		
-		try {
-			System.out.println("thread [personal] \t" + list.get(0).get());
+		
+		
+
+		
+	
+		
+		executor.shutdown();*/
+		
+		
+		
+		//try {
+		//	System.out.println("thread [personal] \t" + list.get(0).get());
 			
-			System.out.println("thread [basics] \t" + list.get(1).get());
+		//	System.out.println("thread [basics] \t" + list.get(1).get());
 			
 			
 			
@@ -88,15 +107,15 @@ public class DataGeneration_Coordinator {
 				finalarr.put(jobj1);
 			}
 			System.out.println("combined output of jsonarrays\t" + finalarr);*/
-		} catch (InterruptedException e) {
+		//} catch (InterruptedException e) {
 			
-			e.printStackTrace();
-		} catch (ExecutionException e) {
+		//	e.printStackTrace();
+	//	} catch (ExecutionException e) {
 		
-			e.printStackTrace();
-		}
+	//		e.printStackTrace();
+	//	}
 
-		return list;
+		return null;
 		// return json;
 	}
 
