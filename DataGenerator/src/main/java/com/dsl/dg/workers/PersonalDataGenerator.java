@@ -55,7 +55,7 @@ public class PersonalDataGenerator implements Callable<JSONArray> {
 		 */
 		WeightedRandomPicker genderPicker = new WeightedRandomPicker();
 		
-
+		WeightedRandomPicker mstatusPicker = new WeightedRandomPicker();
 		
 		PersonProperty[] p = new  PersonProperty[2];
 		
@@ -83,6 +83,13 @@ public class PersonalDataGenerator implements Callable<JSONArray> {
 				
 				
 			}
+			
+		}
+		
+		
+		if(input.containsKey("Marital_Status")) {
+			
+			mstatusPicker.add(50, "Married").add(50, "Single");
 			
 		}
 		
@@ -126,10 +133,10 @@ public class PersonalDataGenerator implements Callable<JSONArray> {
 		}
 		
 		if(allKeys.contains("Marital_Status")) {
-			personJSON.put(input.get("Marital_Status").getString("User Column Name"),"change");
+			personJSON.put(input.get("Marital_Status").getString("User Column Name"),mstatusPicker.next().toString());
 		}
 		if(allKeys.contains("Work_Mail")) {
-			personJSON.put(input.get("Marital_Status").getString("User Column Name"),person.getCompanyEmail());	
+			personJSON.put(input.get("Work_Mail").getString("User Column Name"),person.getCompanyEmail());	
 		}
 		
 		if(allKeys.contains("Gender")) {
@@ -137,7 +144,9 @@ public class PersonalDataGenerator implements Callable<JSONArray> {
 		}
 		
 		if(allKeys.contains("Occupation")) {
-			personJSON.put(input.get("Occupation").getString("User Column Name"),"change");
+			
+			
+			personJSON.put(input.get("Occupation").getString("User Column Name"),DataDictionary.getRandomOccupation());
 		}
 		if(allKeys.contains("Company")){
 			personJSON.put(input.get("Company").getString("User Column Name"),person.getCompany().getName());
@@ -148,7 +157,7 @@ public class PersonalDataGenerator implements Callable<JSONArray> {
 		
 		
 		
-		
+		personArray.put(personJSON);
 		
 		
 		
@@ -162,7 +171,7 @@ public class PersonalDataGenerator implements Callable<JSONArray> {
 		
 		
 		
-		return finarr;
+		return personArray;
 
 	}
 

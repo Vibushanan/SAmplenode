@@ -13,10 +13,16 @@ public class Sample {
 		Faker fak = Faker.instance();
 		
 		
-
+		
+		
+		
 		Fairy fairy = Fairy.create();
 		Person o = fairy.person(PersonProperties.female());
 
+	
+	
+	System.out.println("fak  2  :"+fak.finance().iban("US"));
+		
 		Faker faker = new Faker();
 		System.out.println(faker.finance());
 		

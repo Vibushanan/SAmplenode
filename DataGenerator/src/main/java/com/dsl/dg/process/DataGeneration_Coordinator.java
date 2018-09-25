@@ -55,27 +55,34 @@ public class DataGeneration_Coordinator {
 
 		
 		
-		PersonalDataGenerator pg = 	new PersonalDataGenerator(filterData.get(com.dsl.dg.models.Constants.category_personal), row_count);
-		
-		pg.call();
 		
 		
 		
 		// with callable
-		/*ExecutorService executor = Executors.newFixedThreadPool(Util.getExecutorsCount(3));
+		ExecutorService executor = Executors.newFixedThreadPool(3);
 
 		List<Future<JSONArray>> list = new ArrayList<Future<JSONArray>>();
 
 		if(filterData.containsKey(com.dsl.dg.models.Constants.category_personal)) {
 			Callable<JSONArray> callable_personal = new PersonalDataGenerator(filterData.get(com.dsl.dg.models.Constants.category_personal), row_count);
 			Future<JSONArray> datar = executor.submit(callable_personal);
+			try {
+				System.out.println("Data    ->"+datar.get());
+			} catch (ExecutionException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
 			list.add(datar);
 		}
-		if(filterData.containsKey(com.dsl.dg.models.Constants.category_basics)) {
+		
+		
+		
+		/*if(filterData.containsKey(com.dsl.dg.models.Constants.category_basics)) {
 			Callable<JSONArray> callable_basics = new BasicDataGenerator(filterData.get(com.dsl.dg.models.Constants.category_basics), row_count);
 			Future<JSONArray> datar1 = executor.submit(callable_basics);
 			list.add(datar1);
-		}
+		}*/
 		
 		
 		
@@ -83,12 +90,14 @@ public class DataGeneration_Coordinator {
 		
 	
 		
-		executor.shutdown();*/
+		executor.shutdown();
 		
 		
 		
-		//try {
-		//	System.out.println("thread [personal] \t" + list.get(0).get());
+		try {
+			
+			JSONArray pdata = list.get(0).get();
+			System.out.println("thread [personal] \t" + pdata);
 			
 		//	System.out.println("thread [basics] \t" + list.get(1).get());
 			
@@ -107,13 +116,13 @@ public class DataGeneration_Coordinator {
 				finalarr.put(jobj1);
 			}
 			System.out.println("combined output of jsonarrays\t" + finalarr);*/
-		//} catch (InterruptedException e) {
+		} catch (InterruptedException e) {
 			
-		//	e.printStackTrace();
-	//	} catch (ExecutionException e) {
+			e.printStackTrace();
+		} catch (ExecutionException e) {
 		
-	//		e.printStackTrace();
-	//	}
+			e.printStackTrace();
+		}
 
 		return null;
 		// return json;

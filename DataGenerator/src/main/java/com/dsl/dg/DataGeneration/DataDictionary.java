@@ -7,14 +7,25 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.github.javafaker.Faker;
+
 public class DataDictionary {
 
 	public static List<String> occupations = new ArrayList<String>();
-	public static int occupations_count = occupations.size();
+	public static int occupations_count;
 
 	public static List<String> getOccupations() {
 		return occupations;
 	}
+	
+	
+	public static String getRandomOccupation() {
+		
+		//System.out.println("Occupation.....");
+		int no = RandomNumberGenerator.getRandomNumber(0, occupations_count);
+		return occupations.get(Faker.instance().random().nextInt(0,occupations.size()-1));
+	}
+	
 
 	public static void setOccupations(List<String> occupations) {
 		DataDictionary.occupations = occupations;
@@ -61,11 +72,15 @@ public class DataDictionary {
 			}
 
 		}
-
+		occupations_count = occupations.size();
+		
 		return dictionary;
 	}
 
 	public static void main(String[] args) {
+		
+		
+		
 
 	}
 

@@ -39,6 +39,8 @@ public class Datagenerator extends HttpServlet {
 		DataDictionary.setOccupations(
 				DataDictionary.load_dictionary(new File(classLoader.getResource("Occupations.csv").getFile())));
 
+		System.out.println(  DataDictionary.occupations);
+		
 		logger.info("Dictionary Load completed");
 	}
 
@@ -55,7 +57,7 @@ public class Datagenerator extends HttpServlet {
 		String line = null;
 		StringBuffer jb = new StringBuffer();
 
-		while ((line = reader.readLine()) != null) {
+		while ((line = reader.readLine()) != null) {   
 			jb.append(line);
 		}
 
